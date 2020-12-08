@@ -1,0 +1,413 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/micro_mall_comments_proto/comments_business/comments.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/comments/list": {
+      "get": {
+        "summary": "获取店铺评论列表",
+        "operationId": "CommentsBusinessService_FindShopComments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/comments_businessFindShopCommentsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shop_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "CommentsBusinessService"
+        ]
+      }
+    },
+    "/v1/comments/order": {
+      "post": {
+        "summary": "订单评价",
+        "operationId": "CommentsBusinessService_CommentsOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/comments_businessCommentsOrderResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/comments_businessCommentsOrderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CommentsBusinessService"
+        ]
+      }
+    },
+    "/v1/comments/tags/list": {
+      "get": {
+        "summary": "获取评论标签",
+        "operationId": "CommentsBusinessService_FindCommentsTags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/comments_businessFindCommentsTagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tag_code",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "classification_major",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "classification_medium",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CommentsBusinessService"
+        ]
+      }
+    },
+    "/v1/comments/tags/modify": {
+      "post": {
+        "summary": "修改评论标签",
+        "operationId": "CommentsBusinessService_ModifyCommentsTags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/comments_businessModifyCommentsTagsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/comments_businessModifyCommentsTagsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CommentsBusinessService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "comments_businessCommentsOrderRequest": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "order_info": {
+          "$ref": "#/definitions/comments_businessOrderCommentsInfo"
+        },
+        "logistics_info": {
+          "$ref": "#/definitions/comments_businessLogisticsCommentsInfo"
+        },
+        "anonymity": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "comments_businessCommentsOrderResponse": {
+      "type": "object",
+      "properties": {
+        "common": {
+          "$ref": "#/definitions/comments_businessCommonResponse"
+        }
+      }
+    },
+    "comments_businessCommentsTags": {
+      "type": "object",
+      "properties": {
+        "tag_code": {
+          "type": "string"
+        },
+        "classification_major": {
+          "type": "string"
+        },
+        "classification_medium": {
+          "type": "string"
+        },
+        "classification_minor": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "state": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "comments_businessCommonResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/comments_businessRetCode"
+        },
+        "msg": {
+          "type": "string"
+        }
+      }
+    },
+    "comments_businessFindCommentsTagResponse": {
+      "type": "object",
+      "properties": {
+        "common": {
+          "$ref": "#/definitions/comments_businessCommonResponse"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/comments_businessCommentsTags"
+          }
+        }
+      }
+    },
+    "comments_businessFindShopCommentsResponse": {
+      "type": "object",
+      "properties": {
+        "common": {
+          "$ref": "#/definitions/comments_businessCommonResponse"
+        },
+        "comments_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/comments_businessOrderCommentsInfo"
+          }
+        }
+      }
+    },
+    "comments_businessLogisticsCommentsInfo": {
+      "type": "object",
+      "properties": {
+        "logistics_code": {
+          "type": "string"
+        },
+        "fedex_pack": {
+          "$ref": "#/definitions/comments_businessStarLevel"
+        },
+        "fedex_label": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "delivery_speed": {
+          "$ref": "#/definitions/comments_businessStarLevel"
+        },
+        "delivery_speed_label": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "delivery_service": {
+          "$ref": "#/definitions/comments_businessStarLevel"
+        },
+        "delivery_service_label": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "comments_businessModifyCommentsTagsRequest": {
+      "type": "object",
+      "properties": {
+        "op_type": {
+          "$ref": "#/definitions/comments_businessOperationType"
+        },
+        "tag": {
+          "$ref": "#/definitions/comments_businessCommentsTags"
+        }
+      }
+    },
+    "comments_businessModifyCommentsTagsResponse": {
+      "type": "object",
+      "properties": {
+        "common": {
+          "$ref": "#/definitions/comments_businessCommonResponse"
+        },
+        "tag_code": {
+          "type": "string"
+        }
+      }
+    },
+    "comments_businessOperationType": {
+      "type": "string",
+      "enum": [
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "AUDIT"
+      ],
+      "default": "CREATE"
+    },
+    "comments_businessOrderCommentsInfo": {
+      "type": "object",
+      "properties": {
+        "shop_id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "order_code": {
+          "type": "string"
+        },
+        "star_level": {
+          "$ref": "#/definitions/comments_businessStarLevel"
+        },
+        "content": {
+          "type": "string"
+        },
+        "img_list": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "comment_id": {
+          "type": "string"
+        }
+      }
+    },
+    "comments_businessRetCode": {
+      "type": "string",
+      "enum": [
+        "SUCCESS",
+        "ERROR",
+        "USER_NOT_EXIST",
+        "USER_EXIST",
+        "USER_ORDER_NOT_EXIST",
+        "USER_ORDER_STATE_INVALID",
+        "COMMENT_NOT_EXIST",
+        "COMMENT_EXIST",
+        "TRANSACTION_FAILED",
+        "COMMENT_TAG_NOT_EXIST",
+        "COMMENT_TAG_EXIST"
+      ],
+      "default": "SUCCESS"
+    },
+    "comments_businessStarLevel": {
+      "type": "string",
+      "enum": [
+        "VERY_GOOD",
+        "GOOD",
+        "GENERAL",
+        "BAD",
+        "VERY_BAD"
+      ],
+      "default": "VERY_GOOD"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
