@@ -1742,7 +1742,7 @@ func (c *commentsBusinessServiceClient) ModifyCommentsTags(ctx context.Context, 
 	return out, nil
 }
 
-// CommentsBusinessServiceServer is the server API for CommentsBusinessService service.
+// CommentsBusinessServiceServer is the internal API for CommentsBusinessService service.
 type CommentsBusinessServiceServer interface {
 	// 订单评价
 	CommentsOrder(context.Context, *CommentsOrderRequest) (*CommentsOrderResponse, error)
