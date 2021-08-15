@@ -98,7 +98,7 @@ func CommentsOrder(ctx context.Context, req *comments_business.CommentsOrderRequ
 func createOrderCommentsInspect(ctx context.Context, uid, shopId int64, orderCode string) (retCode int) {
 	retCode = code.Success
 	serverName := args.RpcServiceMicroMallOrder
-	conn, err := util.GetGrpcClient(serverName)
+	conn, err := util.GetGrpcClient(ctx, serverName)
 	if err != nil {
 		kelvins.ErrLogger.Errorf(ctx, "GetGrpcClient %v,err: %v", serverName, err)
 		return code.ErrorServer
