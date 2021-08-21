@@ -103,7 +103,7 @@ func createOrderCommentsInspect(ctx context.Context, uid, shopId int64, orderCod
 		kelvins.ErrLogger.Errorf(ctx, "GetGrpcClient %v,err: %v", serverName, err)
 		return code.ErrorServer
 	}
-	defer conn.Close()
+	//defer conn.Close()
 	orderClient := order_business.NewOrderBusinessServiceClient(conn)
 	orderReq := &order_business.InspectShopOrderRequest{
 		Uid:       uid,
