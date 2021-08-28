@@ -7,6 +7,7 @@ import (
 	"gitee.com/cristiane/micro-mall-comments/proto/micro_mall_comments_proto/comments_business"
 	"gitee.com/cristiane/micro-mall-comments/repository"
 	"gitee.com/kelvins-io/common/errcode"
+	"gitee.com/kelvins-io/common/json"
 	"gitee.com/kelvins-io/kelvins"
 	"github.com/google/uuid"
 	"strings"
@@ -29,7 +30,7 @@ func FindCommentsTags(ctx context.Context, req *comments_business.FindCommentsTa
 	}
 	tagsList, err := repository.FindCommentsTags(sqlSelectFindCommentsTag, where)
 	if err != nil {
-		kelvins.ErrLogger.Errorf(ctx, "FindCommentsTags err: %v,where: %+v", err, where)
+		kelvins.ErrLogger.Errorf(ctx, "FindCommentsTags err: %v,where: %v", err, json.MarshalToStringNoError(where))
 		retCode = code.ErrorServer
 		return
 	}
@@ -76,7 +77,7 @@ func ModifyCommentsTags(ctx context.Context, req *comments_business.ModifyCommen
 		}
 		err := repository.CreateCommentsTags([]mysql.CommentsTags{tag})
 		if err != nil {
-			kelvins.ErrLogger.Errorf(ctx, "CreateCommentsTags err: %v, model: %+v", err, tag)
+			kelvins.ErrLogger.Errorf(ctx, "CreateCommentsTags err: %v, model: %v", err, json.MarshalToStringNoError(tag))
 			if strings.Contains(err.Error(), errcode.GetErrMsg(code.DBDuplicateEntry)) {
 				retCode = code.CommentTagExist
 				return
@@ -91,7 +92,7 @@ func ModifyCommentsTags(ctx context.Context, req *comments_business.ModifyCommen
 		}
 		tags, err := repository.FindCommentsTags("tag_code", findWhere)
 		if err != nil {
-			kelvins.ErrLogger.Errorf(ctx, "FindCommentsTags err: %v, findWhere: %+v", err, findWhere)
+			kelvins.ErrLogger.Errorf(ctx, "FindCommentsTags err: %v, findWhere: %v", err, json.MarshalToStringNoError(findWhere))
 			retCode = code.ErrorServer
 			return
 		}
@@ -113,7 +114,7 @@ func ModifyCommentsTags(ctx context.Context, req *comments_business.ModifyCommen
 		}
 		_, err = repository.UpdateCommentsTag(updateWhere, updateMaps)
 		if err != nil {
-			kelvins.ErrLogger.Errorf(ctx, "UpdateCommentsTag err: %v, updateWhere: %+v,updateMaps:%+v", err, updateWhere, updateMaps)
+			kelvins.ErrLogger.Errorf(ctx, "UpdateCommentsTag err: %v, updateWhere: %v,updateMaps:%v", err, json.MarshalToStringNoError(updateWhere), json.MarshalToStringNoError(updateMaps))
 			retCode = code.ErrorServer
 			return
 		}

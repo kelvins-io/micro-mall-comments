@@ -9,6 +9,7 @@ import (
 	"gitee.com/cristiane/micro-mall-comments/proto/micro_mall_comments_proto/comments_business"
 	"gitee.com/cristiane/micro-mall-comments/proto/micro_mall_order_proto/order_business"
 	"gitee.com/cristiane/micro-mall-comments/repository"
+	"gitee.com/kelvins-io/common/json"
 	"gitee.com/kelvins-io/kelvins"
 	"github.com/google/uuid"
 	"strings"
@@ -69,9 +70,9 @@ func CommentsOrder(ctx context.Context, req *comments_business.CommentsOrderRequ
 	if err != nil {
 		errRollback := tx.Rollback()
 		if errRollback != nil {
-			kelvins.ErrLogger.Errorf(ctx, "CreateCommentLogisticsByTx Rollback err: %v, model: %+v", errRollback, logisticsComment)
+			kelvins.ErrLogger.Errorf(ctx, "CreateCommentLogisticsByTx Rollback err: %v, model: %+v", errRollback, json.MarshalToStringNoError(logisticsComment))
 		}
-		kelvins.ErrLogger.Errorf(ctx, "CreateCommentLogisticsByTx err: %v, model: %+v", err, logisticsComment)
+		kelvins.ErrLogger.Errorf(ctx, "CreateCommentLogisticsByTx err: %v, model: %v", err, json.MarshalToStringNoError(logisticsComment))
 		retCode = code.ErrorServer
 		return
 	}
@@ -79,9 +80,9 @@ func CommentsOrder(ctx context.Context, req *comments_business.CommentsOrderRequ
 	if err != nil {
 		errRollback := tx.Rollback()
 		if errRollback != nil {
-			kelvins.ErrLogger.Errorf(ctx, "CreateCommentOrderByTx Rollback err: %v, model: %+v", errRollback, orderComment)
+			kelvins.ErrLogger.Errorf(ctx, "CreateCommentOrderByTx Rollback err: %v, model: %v", errRollback, json.MarshalToStringNoError(orderComment))
 		}
-		kelvins.ErrLogger.Errorf(ctx, "CreateCommentOrderByTx err: %v, model: %+v", err, orderComment)
+		kelvins.ErrLogger.Errorf(ctx, "CreateCommentOrderByTx err: %v, model: %v", err, json.MarshalToStringNoError(orderComment))
 		retCode = code.ErrorServer
 		return
 	}
@@ -118,7 +119,7 @@ func createOrderCommentsInspect(ctx context.Context, uid, shopId int64, orderCod
 	if orderRsp.Common.Code == order_business.RetCode_SUCCESS {
 		return
 	}
-	kelvins.ErrLogger.Errorf(ctx, "InspectShopOrder %v,req: %+v, rsp: %+v", serverName, orderReq, orderRsp)
+	kelvins.ErrLogger.Errorf(ctx, "InspectShopOrder req: %v, rsp: %v", json.MarshalToStringNoError(orderReq), json.MarshalToStringNoError(orderRsp))
 	switch orderRsp.Common.Code {
 	case order_business.RetCode_ORDER_STATE_INVALID:
 		retCode = code.UserOrderStateInvalid
