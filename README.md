@@ -14,17 +14,22 @@ g2cache缓存库支持（两级缓存）：https://gitee.com/kelvins-io/g2cache
 
 1.仅构建  sh build.sh   
 2 运行  sh build-run.sh   
+3 停止 sh stop.sh   
 
 #### 使用说明
 参考配置
 ```toml
 [kelvins-server]
-EndPoint = 8080  #由于后期采用了etcd，故此配置不再生效
 IsRecordCallResponse = true
+Environment = "dev"
 
 [kelvins-logger]
 RootPath = "./logs"
 Level = "debug"
+
+[kelvins-auth]
+Token = "c9VW6ForlmzdeDkZE2i8"
+TransportSecurity = false
 
 [kelvins-mysql]
 Host = "127.0.0.1:3306"
