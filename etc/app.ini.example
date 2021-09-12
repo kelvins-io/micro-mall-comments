@@ -28,18 +28,6 @@ Password = "xxx"
 DB = 1
 PoolNum = 10
 
-[kelvins-queue-amqp]
-Broker = "amqp://micro-mall:szJ9aePR@localhost:5672/micro-mall"
-DefaultQueue = "trade_pay_notice"
-ResultBackend = "redis://xxx@127.0.0.1:6379/10"
-ResultsExpireIn = 36000
-Exchange = "trade_pay_notice"
-ExchangeType = "direct"
-BindingKey = "trade_pay_notice"
-PrefetchCount = 5
-TaskRetryCount = 3
-TaskRetryTimeout = 3600
-
 [email-config]
 User = "xxx@qq.com"
 Password = "xxxx"
