@@ -66,22 +66,23 @@ func CommentsOrder(ctx context.Context, req *comments_business.CommentsOrderRequ
 		retCode = code.ErrorServer
 		return
 	}
+	defer func() {
+		if retCode != code.Success {
+			err := tx.Rollback()
+			if err != nil {
+				kelvins.ErrLogger.Errorf(ctx, "CommentsOrder Rollback err: %v", err)
+				return
+			}
+		}
+	}()
 	err = repository.CreateCommentLogisticsByTx(tx, logisticsComment)
 	if err != nil {
-		errRollback := tx.Rollback()
-		if errRollback != nil {
-			kelvins.ErrLogger.Errorf(ctx, "CreateCommentLogisticsByTx Rollback err: %v, model: %+v", errRollback, json.MarshalToStringNoError(logisticsComment))
-		}
 		kelvins.ErrLogger.Errorf(ctx, "CreateCommentLogisticsByTx err: %v, model: %v", err, json.MarshalToStringNoError(logisticsComment))
 		retCode = code.ErrorServer
 		return
 	}
 	err = repository.CreateCommentOrderByTx(tx, orderComment)
 	if err != nil {
-		errRollback := tx.Rollback()
-		if errRollback != nil {
-			kelvins.ErrLogger.Errorf(ctx, "CreateCommentOrderByTx Rollback err: %v, model: %v", errRollback, json.MarshalToStringNoError(orderComment))
-		}
 		kelvins.ErrLogger.Errorf(ctx, "CreateCommentOrderByTx err: %v, model: %v", err, json.MarshalToStringNoError(orderComment))
 		retCode = code.ErrorServer
 		return
